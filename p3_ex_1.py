@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import numpy.random as rand
 import math
+from decimal import Decimal
 
 COLORS_INDEX = 0
 COLORS_CHOICES = ['b', 'r', 'g', 'y']
@@ -124,7 +125,6 @@ def squared_error(weights, data, classes):
         for i in range (0, len(data[j][0])):
             classifications[j].append(classify(weights, data[j][0][i], data[j][1][i]))
 
-    print (classifications)
 
     # Perform summation
     total = 0
@@ -133,9 +133,9 @@ def squared_error(weights, data, classes):
         # For each classification
         subtotal = 0
         for j in range (0, len(classifications[i])):
-            # print(subtotal)
-            subtotal += (.5) * np.square(classifications[i][j] - classes[i])
+            subtotal += Decimal(.5) * Decimal(np.square(classifications[i][j] - classes[i]))
         total += subtotal
+        total /= 2
     
     return total
 
@@ -173,10 +173,8 @@ if __name__ == '__main__':
     plt.figure('Surface Plot')
 
     plot_surface(-5.5, .82, 1)
-    # plot_surface(-3, .1, 1)
 
     # Test points (1e):
-
     # Ambiguous
     print('Classifications:')
     print('Versicolor: 5, 1.7: ', classify((-5.5, .82, 1),5,1.7))
@@ -193,9 +191,5 @@ if __name__ == '__main__':
     # New Error (Big)
     print('Error for weights (-6, .4, 1): ', squared_error((-6, .4, 1), (versicolor, virginica), (0, 1)))
     plot_decision_boundary(-6, .4, 1)
-
-    # Weird Error
-    print('Error for weights (-3, .1, 1): ', squared_error((-3, .1, 1), (versicolor, virginica), (0, 1)))
-    plot_decision_boundary(-3, .1, 1)
 
     plt.show()
